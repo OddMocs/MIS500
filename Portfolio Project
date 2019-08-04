@@ -1,0 +1,30 @@
+*** Create a SAS data set from a single SAS transport file;
+*** The SAS transport file(s) must be downloaded from the MEPS web site and 
+    then unzipped before running this program;
+LIBNAME sasdata "/folders/myshortcuts/C_DRIVE/MEPS/Data"; /*changed from windows format to Unix format to work with Unix based VM */
+FILENAME in1 "/folders/myshortcuts/C_DRIVE/MEPS/ssp/h192.ssp"; /*changed from windows format to Unix format to work with Unix based VM */
+proc xcopy in = in1 out = sasdata IMPORT;
+run;
+
+*** Create SAS data sets from multiple SAS transport files
+    using a modular macro updated to work with SAS Studio University Edition;
+
+%macro create (fn);
+LIBNAME sasdata "/folders/myshortcuts/C_DRIVE/MEPS/Data"; /*changed from windows format to Unix format to work with Unix based VM */
+FILENAME in1 "/folders/myshortcuts/C_DRIVE/MEPS/ssp/&fn..ssp"; /*changed from windows format to Unix format to work with Unix based VM */
+proc xcopy in = in1 out = sasdata IMPORT;
+run;
+%mend create;
+%create (h192)  /* full-year consolidate file, updated for 2016 */
+%create (h190)  /* medical condition file, updated for 2016 */
+%create (h172)  /* longitudinal file, panel 17 (2013-14) */
+%create (h183)  /* longitudinal file, panel 18 (2014-15) */
+%create (h193)  /* longitudinal file, panel 19 (2015-16) */
+%create (h188a) /* prescribed medicines file, updated for 2016 */
+%create (h188d) /* hospital inpatient hospital stays file, updated for 2016 */
+%create (h188e) /* emergency room visits file, updated for 2016 */
+%create (h188f) /* outpatient visits file, updated for 2016 */
+%create (h188g) /* office-based medical provider visits file, updated for 2016 */
+%create (h188h) /* home health file, updated for 2016 */
+%create (h188if1) /* condition-event CLNK file, updated for 2016 */
+%create (h188if2) /* prescription medicines RXLK file, updated for 2016 */
